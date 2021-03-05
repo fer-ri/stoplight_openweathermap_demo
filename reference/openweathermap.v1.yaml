@@ -10,12 +10,189 @@ info:
 servers:
   - url: 'https://api.openweathermap.org/data/2.5'
     description: production
-paths: {}
+paths:
+  /weather:
+    get:
+      summary: Your GET endpoint
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  coord:
+                    type: object
+                    required:
+                      - lon
+                      - lat
+                    properties:
+                      lon:
+                        type: number
+                        description: 'City geo location, longitude'
+                      lat:
+                        type: number
+                        description: 'City geo location, latitude'
+                  weather:
+                    type: array
+                    uniqueItems: true
+                    minItems: 1
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                        main:
+                          type: string
+                          minLength: 1
+                        description:
+                          type: string
+                          minLength: 1
+                        icon:
+                          type: string
+                          minLength: 1
+                      required:
+                        - id
+                        - main
+                        - description
+                        - icon
+                  base:
+                    type: string
+                    minLength: 1
+                  main:
+                    type: object
+                    required:
+                      - temp
+                      - pressure
+                      - humidity
+                      - temp_min
+                      - temp_max
+                    properties:
+                      temp:
+                        type: number
+                      pressure:
+                        type: number
+                      humidity:
+                        type: number
+                      temp_min:
+                        type: number
+                      temp_max:
+                        type: number
+                  visibility:
+                    type: number
+                  wind:
+                    type: object
+                    required:
+                      - speed
+                      - deg
+                    properties:
+                      speed:
+                        type: number
+                      deg:
+                        type: number
+                  clouds:
+                    type: object
+                    required:
+                      - all
+                    properties:
+                      all:
+                        type: number
+                  dt:
+                    type: number
+                  sys:
+                    type: object
+                    required:
+                      - type
+                      - id
+                      - message
+                      - country
+                      - sunrise
+                      - sunset
+                    properties:
+                      type:
+                        type: number
+                      id:
+                        type: number
+                      message:
+                        type: number
+                      country:
+                        type: string
+                        minLength: 1
+                      sunrise:
+                        type: number
+                      sunset:
+                        type: number
+                  id:
+                    type: number
+                  name:
+                    type: string
+                    minLength: 1
+                  cod:
+                    type: number
+                required:
+                  - coord
+                  - weather
+                  - base
+                  - main
+                  - visibility
+                  - wind
+                  - clouds
+                  - dt
+                  - sys
+                  - id
+                  - name
+                  - cod
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  cod:
+                    type: number
+                  message:
+                    type: string
+                    minLength: 1
+                required:
+                  - cod
+                  - message
+      operationId: get-weather
+      description: 'Access current weather data for any location on Earth including over 200,000 cities! We collect and process weather data from different sources such as global and local weather models, satellites, radars and vast network of weather stations. Data is available in JSON, XML, or HTML format.'
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: q
+          description: 'City name, state code and country code divided by comma, use ISO 3166 country codes. You can specify the parameter not only in English. In this case, the API response should be returned in the same language as the language of requested location name if the location is in our predefined list of more than 200,000 locations.'
+          required: true
+        - schema:
+            type: string
+          in: query
+          description: Response format. Possible values are xml and html. If you don't use the mode parameter format is JSON by default.
+          name: mode
+        - schema:
+            type: string
+          in: query
+          name: units
+          description: 'Units of measurement. standard, metric and imperial units are available. If you do not use the units parameter, standard units will be applied by default.'
+        - schema:
+            type: string
+          in: query
+          name: lang
+          description: You can use this parameter to get the output in your language. Learn more
+      security:
+        - AppId: []
+      tags:
+        - current weather
 components:
   schemas: {}
   securitySchemes:
-    appid:
-      name: API Key
+    AppId:
+      name: appid
       type: apiKey
       in: query
 tags:
