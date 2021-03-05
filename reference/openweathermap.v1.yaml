@@ -1,0 +1,22 @@
+openapi: 3.0.0
+info:
+  title: openweathermap
+  version: '1.0'
+  description: 'Access current weather data for any location on Earth including over 200,000 cities! We collect and process weather data from different sources such as global and local weather models, satellites, radars and vast network of weather stations. Data is available in JSON, XML, or HTML format.'
+  contact:
+    name: openweathermap
+    url: 'https://openweathermap.org/current'
+    email: demo@openweathermap.org
+servers:
+  - url: 'https://api.openweathermap.org/data/2.5'
+    description: production
+paths: {}
+components:
+  schemas: {}
+  securitySchemes:
+    appid:
+      name: API Key
+      type: apiKey
+      in: query
+tags:
+  - name: current weather
